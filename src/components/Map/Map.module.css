@@ -1,0 +1,6 @@
+.map__wrapper {
+  border: 2px solid red;
+  margin: 0 auto;
+  width: max-content;
+  height: 100%;
+}
