@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("../components/Map/MapComponent"), {
+const Map = dynamic(() => import("../components/Mapbox/MapBoxDraw"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
