@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("../components/Mapbox/MapBoxDraw"), {
+const HomeComponent = dynamic(() => import("../components/Home/Home"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
@@ -8,7 +8,7 @@ const Map = dynamic(() => import("../components/Mapbox/MapBoxDraw"), {
 export default function Home() {
   return (
     <main>
-      <Map />
+      <HomeComponent />
     </main>
   );
 }

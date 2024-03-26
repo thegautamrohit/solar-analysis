@@ -3,10 +3,12 @@ import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import * as turf from "@turf/turf";
+import CutPolygonMode from "mapbox-gl-draw-cut-polygon-mode";
+import mapboxGlDrawPassingMode from "mapbox-gl-draw-passing-mode";
 
 const YOUR_MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAP_TOKEN;
 
-const MapBoxDraw = () => {
+const MapBoxDraw = ({ area, setArea }) => {
   const [theme, setTheme] = useState("satellite");
 
   function themeHandler(e) {
@@ -33,9 +35,16 @@ const MapBoxDraw = () => {
         trash: true,
       },
       defaultMode: "draw_polygon",
+      modes: Object.assign(MapboxDraw.modes, {
+        cutPolygonMode: CutPolygonMode,
+        passing_mode_polygon: mapboxGlDrawPassingMode(
+          MapboxDraw.modes.draw_polygon
+        ),
+      }),
     });
 
     map.addControl(draw);
+    draw.changeMode("cutPolygonMode");
 
     map.on("draw.create", updateArea);
     map.on("draw.delete", updateArea);
@@ -43,10 +52,8 @@ const MapBoxDraw = () => {
 
     function updateArea(e) {
       const data = draw.getAll();
-      const answer = document.getElementById("calculated-area");
 
       if (!data || data.features.length === 0) {
-        answer.innerHTML = "";
         if (e.type !== "draw.delete") {
           alert("Click the map to draw a polygon.");
         }
@@ -56,7 +63,7 @@ const MapBoxDraw = () => {
       const polygon = turf.polygon(data.features[0].geometry.coordinates);
       const area = turf.area(polygon);
       const rounded_area = Math.round(area * 100) / 100;
-      answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+      setArea(rounded_area);
     }
 
     // Clean up function
@@ -64,51 +71,74 @@ const MapBoxDraw = () => {
   }, [theme]); // Run only once on component mount
 
   return (
-    <div>
+    <div class="w-9/12">
       <div id="map" style={{ width: "100%", height: "800px" }}></div>
-      <div id="calculated-area"></div>
-      <div id="menu" onChange={(e) => themeHandler(e)}>
-        <input
-          id="satellite-streets-v12"
-          type="radio"
-          name="rtoggle"
-          value="satellite"
-          checked={theme === "satellite"}
-        />
 
-        <label htmlFor="satellite-streets-v12">Satellite Streets</label>
-        <input
-          id="light-v11"
-          type="radio"
-          name="rtoggle"
-          value="light"
-          checked={theme === "light"}
-        />
-        <label htmlFor="light-v11">Light</label>
-        <input
-          id="dark-v11"
-          type="radio"
-          name="rtoggle"
-          value="dark"
-          checked={theme === "dark"}
-        />
-        <label htmlFor="dark-v11">Dark</label>
-        <input
-          id="streets-v12"
-          type="radio"
-          name="rtoggle"
-          value="streets"
-          checked={theme === "streets"}
-        />
-        <label htmlFor="streets-v12">Streets</label>
-        <input
-          id="outdoors-v12"
-          type="radio"
-          name="rtoggle"
-          value="outdoors"
-          checked={theme === "outdoors"}
-        />
-        <label htmlFor="outdoors-v12">Outdoors</label>
+      <div
+        id="menu"
+        onChange={(e) => themeHandler(e)}
+        class="flex gap-4 m-4 items-center justify-start "
+      >
+        <div class="flex gap-2">
+          <input
+            class="cursor-pointer"
+            id="satellite-streets-v12"
+            type="radio"
+            name="rtoggle"
+            value="satellite"
+            checked={theme === "satellite"}
+          />
+
+          <label htmlFor="satellite-streets-v12">Satellite Streets</label>
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            class="cursor-pointer"
+            id="light-v11"
+            type="radio"
+            name="rtoggle"
+            value="light"
+            checked={theme === "light"}
+          />
+          <label htmlFor="light-v11">Light</label>
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            class="cursor-pointer"
+            id="dark-v11"
+            type="radio"
+            name="rtoggle"
+            value="dark"
+            checked={theme === "dark"}
+          />
+          <label htmlFor="dark-v11">Dark</label>
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            class="cursor-pointer"
+            id="streets-v12"
+            type="radio"
+            name="rtoggle"
+            value="streets"
+            checked={theme === "streets"}
+          />
+          <label htmlFor="streets-v12">Streets</label>
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            class="cursor-pointer"
+            id="outdoors-v12"
+            type="radio"
+            name="rtoggle"
+            value="outdoors"
+            checked={theme === "outdoors"}
+          />
+          <label htmlFor="outdoors-v12">Outdoors</label>
+        </div>
       </div>
     </div>
   );
