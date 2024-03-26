@@ -99,66 +99,22 @@ const MapBoxDraw = ({ area, setArea }) => {
         onChange={(e) => themeHandler(e)}
         class="flex gap-4 m-4 items-center justify-start "
       >
-        <div class="flex gap-2">
-          <input
-            class="cursor-pointer"
-            id="satellite-streets-v12"
-            type="radio"
-            name="rtoggle"
-            value="satellite"
-            checked={theme === "satellite"}
-          />
+        {["satellite", "light", "dark", "streets", "outdoors"]?.map(
+          (themeOption, index) => (
+            <div class="flex gap-2" key={index}>
+              <input
+                class="cursor-pointer"
+                id="satellite-streets-v12"
+                type="radio"
+                name="rtoggle"
+                value={themeOption}
+                checked={theme === themeOption}
+              />
 
-          <label htmlFor="satellite-streets-v12">Satellite Streets</label>
-        </div>
-
-        <div class="flex gap-2">
-          <input
-            class="cursor-pointer"
-            id="light-v11"
-            type="radio"
-            name="rtoggle"
-            value="light"
-            checked={theme === "light"}
-          />
-          <label htmlFor="light-v11">Light</label>
-        </div>
-
-        <div class="flex gap-2">
-          <input
-            class="cursor-pointer"
-            id="dark-v11"
-            type="radio"
-            name="rtoggle"
-            value="dark"
-            checked={theme === "dark"}
-          />
-          <label htmlFor="dark-v11">Dark</label>
-        </div>
-
-        <div class="flex gap-2">
-          <input
-            class="cursor-pointer"
-            id="streets-v12"
-            type="radio"
-            name="rtoggle"
-            value="streets"
-            checked={theme === "streets"}
-          />
-          <label htmlFor="streets-v12">Streets</label>
-        </div>
-
-        <div class="flex gap-2">
-          <input
-            class="cursor-pointer"
-            id="outdoors-v12"
-            type="radio"
-            name="rtoggle"
-            value="outdoors"
-            checked={theme === "outdoors"}
-          />
-          <label htmlFor="outdoors-v12">Outdoors</label>
-        </div>
+              <label htmlFor="satellite-streets-v12">{themeOption}</label>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
