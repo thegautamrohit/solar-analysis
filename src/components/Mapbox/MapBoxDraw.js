@@ -3,8 +3,6 @@ import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import * as turf from "@turf/turf";
-import CutPolygonMode from "mapbox-gl-draw-cut-polygon-mode";
-import mapboxGlDrawPassingMode from "mapbox-gl-draw-passing-mode";
 
 const YOUR_MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAP_TOKEN;
 
@@ -35,16 +33,9 @@ const MapBoxDraw = ({ area, setArea }) => {
         trash: true,
       },
       defaultMode: "draw_polygon",
-      modes: Object.assign(MapboxDraw.modes, {
-        cutPolygonMode: CutPolygonMode,
-        passing_mode_polygon: mapboxGlDrawPassingMode(
-          MapboxDraw.modes.draw_polygon
-        ),
-      }),
     });
 
     map.addControl(draw);
-    draw.changeMode("cutPolygonMode");
 
     map.on("draw.create", updateArea);
     map.on("draw.delete", updateArea);
