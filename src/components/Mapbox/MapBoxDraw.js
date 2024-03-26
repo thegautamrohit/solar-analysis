@@ -15,6 +15,19 @@ const MapBoxDraw = ({ area, setArea }) => {
     }
   }
 
+  function calculateLengthAndMidPoints(c1, c2) {
+    let point1 = turf.point(c1);
+    let point2 = turf.point(c2);
+
+    let line = turf.lineString([c1, c2]);
+    let length = turf.length(line, { units: "meters" });
+
+    return {
+      length,
+      midpoint: turf.midpoint(point1, point2).geometry.coordinates,
+    };
+  }
+
   useEffect(() => {
     mapboxgl.accessToken = YOUR_MAPBOX_ACCESS_TOKEN;
 
@@ -49,6 +62,22 @@ const MapBoxDraw = ({ area, setArea }) => {
           alert("Click the map to draw a polygon.");
         }
         return;
+      }
+
+      let coordArr = data.features[0].geometry.coordinates[0];
+
+      for (let i = 1; i < coordArr.length; i++) {
+        let { length, midpoint } = calculateLengthAndMidPoints(
+          coordArr[i - 1],
+          coordArr[i]
+        );
+
+        const el = document.createElement("p");
+        el.className = "text-white text-base font-bold";
+        el.innerText = length.toFixed(2) + "m";
+
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el).setLngLat(midpoint).addTo(map);
       }
 
       const polygon = turf.polygon(data.features[0].geometry.coordinates);
