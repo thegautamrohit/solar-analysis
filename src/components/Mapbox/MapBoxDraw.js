@@ -39,6 +39,14 @@ const MapBoxDraw = ({ area, setArea }) => {
       center: [-91.874, 42.76], // starting position [lng, lat]
       zoom: 12, // starting zoom
     });
+
+    //Adding Geocoder
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+    });
+    map.addControl(geocoder);
+
     map.addControl(new mapboxgl.NavigationControl());
 
     const draw = new MapboxDraw({
@@ -47,7 +55,7 @@ const MapBoxDraw = ({ area, setArea }) => {
         polygon: true,
         trash: true,
       },
-      defaultMode: "draw_polygon",
+      //   defaultMode: "draw_polygon",
     });
 
     map.addControl(draw);
@@ -88,27 +96,13 @@ const MapBoxDraw = ({ area, setArea }) => {
       setArea(rounded_area);
     }
 
-    //Adding Geocoder
-
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-    });
-
-    // Check if the geocoder control is not already added to the UI
-    if (!document.getElementById("geocoder").querySelector(".mapboxgl-ctrl")) {
-      document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
-    }
-
     // Clean up function
     return () => map.remove();
   }, [theme]); // Run only once on component mount
 
   return (
     <div className="w-9/12">
-      <div id="map" style={{ width: "100%", height: "800px" }}>
-        <div id="geocoder" className="geocoder"></div>
-      </div>
+      <div id="map" style={{ width: "100%", height: "800px" }}></div>
 
       <div
         id="menu"
