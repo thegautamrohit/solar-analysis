@@ -10,7 +10,7 @@ function Home() {
   const [area, setArea] = useState(0);
 
   return (
-    <div class="flex w-full">
+    <div className="flex w-full">
       <MapBox area={area} setArea={setArea} />
       <SidePane area={area} setArea={setArea} />
     </div>

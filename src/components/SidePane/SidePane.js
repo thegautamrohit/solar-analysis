@@ -10,12 +10,12 @@ function SidePane({ area, setArea }) {
   const areaMiles = turf.convertArea(area, "meters", "miles").toFixed(4);
 
   return (
-    <div class="w-3/12 p-8 ">
-      <h2 class="text-2xl font-semibold mb-10 pb-5 border-b-2">
+    <div className="w-3/12 p-8 ">
+      <h2 className="text-2xl font-semibold mb-10 pb-5 border-b-2">
         Selected Area Specifications
       </h2>
       {area ? (
-        <div class="flex flex-col gap-8">
+        <div className="flex flex-col gap-8">
           <div>
             <h1>Area in square meters:</h1>
             <p>
@@ -50,7 +50,7 @@ function SidePane({ area, setArea }) {
         </div>
       ) : (
         <div>
-          <p class="text-xl text-center">
+          <p className="text-xl text-center">
             Select area in graph to calculate area
           </p>
         </div>

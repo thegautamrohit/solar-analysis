@@ -3,6 +3,8 @@ import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import * as turf from "@turf/turf";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 const YOUR_MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAP_TOKEN;
 
@@ -86,24 +88,38 @@ const MapBoxDraw = ({ area, setArea }) => {
       setArea(rounded_area);
     }
 
+    //Adding Geocoder
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+    });
+
+    // Check if the geocoder control is not already added to the UI
+    if (!document.getElementById("geocoder").querySelector(".mapboxgl-ctrl")) {
+      document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
+    }
+
     // Clean up function
     return () => map.remove();
   }, [theme]); // Run only once on component mount
 
   return (
-    <div class="w-9/12">
-      <div id="map" style={{ width: "100%", height: "800px" }}></div>
+    <div className="w-9/12">
+      <div id="map" style={{ width: "100%", height: "800px" }}>
+        <div id="geocoder" className="geocoder"></div>
+      </div>
 
       <div
         id="menu"
         onChange={(e) => themeHandler(e)}
-        class="flex gap-4 m-4 items-center justify-start "
+        className="flex gap-4 m-4 items-center justify-start "
       >
         {["satellite", "light", "dark", "streets", "outdoors"]?.map(
           (themeOption, index) => (
-            <div class="flex gap-2" key={index}>
+            <div className="flex gap-2" key={index}>
               <input
-                class="cursor-pointer"
+                className="cursor-pointer"
                 id="satellite-streets-v12"
                 type="radio"
                 name="rtoggle"
