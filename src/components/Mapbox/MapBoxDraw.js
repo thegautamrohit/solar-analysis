@@ -102,29 +102,37 @@ const MapBoxDraw = ({ area, setArea }) => {
 
   return (
     <div className="w-9/12">
-      <div id="map" style={{ width: "100%", height: "800px" }}></div>
-
       <div
-        id="menu"
-        onChange={(e) => themeHandler(e)}
-        className="flex gap-4 m-4 items-center justify-start "
+        id="map"
+        style={{ position: "relative", width: "100%", height: "800px" }}
       >
-        {["satellite", "light", "dark", "streets", "outdoors"]?.map(
-          (themeOption, index) => (
-            <div className="flex gap-2" key={index}>
-              <input
-                className="cursor-pointer"
-                id="satellite-streets-v12"
-                type="radio"
-                name="rtoggle"
-                value={themeOption}
-                checked={theme === themeOption}
-              />
+        <div
+          id="menu"
+          onChange={(e) => themeHandler(e)}
+          className="flex gap-4 m-4 items-center justify-start absolute z-10 mt-10px bg-white p-2 rounded"
+        >
+          {["satellite", "light", "dark", "streets", "outdoors"]?.map(
+            (themeOption, index) => (
+              <div className=" flex gap-2 " key={index}>
+                <input
+                  className="cursor-pointer"
+                  id="satellite-streets-v12"
+                  type="radio"
+                  name="rtoggle"
+                  value={themeOption}
+                  checked={theme === themeOption}
+                />
 
-              <label htmlFor="satellite-streets-v12">{themeOption}</label>
-            </div>
-          )
-        )}
+                <label
+                  htmlFor="satellite-streets-v12"
+                  className="text-sm capitalize font-medium "
+                >
+                  {themeOption}
+                </label>
+              </div>
+            )
+          )}
+        </div>
       </div>
     </div>
   );
